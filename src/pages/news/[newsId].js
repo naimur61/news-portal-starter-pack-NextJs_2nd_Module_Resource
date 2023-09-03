@@ -1,10 +1,11 @@
 import RootLayout from '@/components/Layouts/RootLayout';
+import Image from 'next/image';
 import React from 'react';
 
 const NewsDetails = ({ news }) => {
    return (
       <div>
-         <p>Id: {news?.id}</p>
+         <Image src={news?.image_url} width={500} height={500} layout='responsive' alt='news' />
          <p> Title :{news?.title}</p>
       </div>
    );
@@ -20,19 +21,19 @@ NewsDetails.getLayout = function getLayout(page) {
 
 // get data 
 
-export async function getStaticPaths() {
-   const res = await fetch('http://localhost:5000/news')
-   const newses = await res.json();
+// export async function getStaticPaths() {
+//    const res = await fetch('http://localhost:5000/news')
+//    const newses = await res.json();
 
-   const paths = newses.map(news => ({
-      params: { newsId: news?.id }
-   }))
+//    const paths = newses.map(news => ({
+//       params: { newsId: news?.id }
+//    }))
 
-   return { paths, fallback: false }
-};
+//    return { paths, fallback: false }
+// };
 
 
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
    const { params } = context;
 
    const res = await fetch(`http://localhost:5000/news/${params?.newsId}`)
